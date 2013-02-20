@@ -1,0 +1,77 @@
+
+/*.wp-pagenavi a, .wp-pagenavi a:link {
+	padding: 2px 4px 2px 4px; 
+	margin: 2px;
+	text-decoration: none;
+	border: 1px solid #0066cc;
+	color: #FFF;
+	background-color:#0072A8;	
+}
+.wp-pagenavi a:visited {
+	padding: 2px 4px 2px 4px; 
+	margin: 2px;
+	text-decoration: none;
+	border: 1px solid #0066cc;
+	color: #FFF;
+	background-color:#0072A8;	
+}
+.wp-pagenavi a:hover {	
+	border: 1px solid #0066cc;
+	color: #FFF;
+	background-color:#0072A8;
+}
+.wp-pagenavi a:active {
+	padding: 2px 4px 2px 4px; 
+	margin: 2px;
+	text-decoration: none;
+	border: 1px solid #0066cc;
+	color: #FFF;
+	background-color: #FFFFFF;
+}
+.wp-pagenavi span.pages {
+	padding: 2px 4px 2px 4px; 
+	margin: 2px 2px 2px 2px;
+	color: #FFF;
+	border: 1px solid #0066cc;
+	background-color:#0072A8;
+}
+.wp-pagenavi span.current {
+	padding: 2px 4px 2px 4px; 
+	margin: 2px;
+	border: 1px solid #0066cc;
+	color: #333; 
+	background-color: #FFFFFF;
+}
+.wp-pagenavi span.extend {
+	padding: 2px 4px 2px 4px; 
+	margin: 2px;	
+	border: 1px solid #0066cc;
+	color: #FFF;
+	background-color: #FFFFFF;
+}*/
+
+#index_box_head .wp-pagenavi span.current{background:url(mbt.gif) center top no-repeat;width:47px; height:33px;}
+#index_box_head .wp-pagenavi span,.wp-pagenavi a{display:block; text-align:center;}
+#index_box_head .pages,#index_box_head .wp-pagenavi span,#index_box_head .wp-pagenavi a{ float:left; 
+position:relative; margin-top:-11px; 
+padding-top:5px; color: #666; font-weight:bold; 
+margin-right:10px; font-size:12px;}
+
+.navigation{ padding-top:15px;}
+.navigation .wp-pagenavi span.current{background:url(mbtd.gif) center top no-repeat;width:47px; height:33px;}
+.navigation .wp-pagenavi span,.wp-pagenavi a{display:block; text-align:center;}
+.navigation .pages,.navigation .wp-pagenavi span,.navigation .wp-pagenavi a{ float:left; 
+position: relative; margin-bottom:-16px; 
+padding-top:5px; color: #666; font-weight:bold; 
+margin-right:10px; font-size:12px;}
+
+
+.list_page{ padding-top:15px;}
+.list_page .wp-pagenavi span.current{background:url(cbt.gif) center top no-repeat;width:55px; height:35px;}
+.list_page .wp-pagenavi span,.wp-pagenavi a{display:block; text-align:center;}
+.list_page .pages,.list_page .wp-pagenavi span,.list_page .wp-pagenavi a{ float:left; 
+position: relative; margin-bottom:-16px; 
+padding-top:5px; color: #666; font-weight:bold; 
+margin-right:10px; font-size:12px;}
+
+

@@ -1,0 +1,48 @@
+.rc_item .rc_avatar {
+padding: 5px 0 0 5px; width: 55px; height: 55px; background: url(avatar_bg.gif) no-repeat;
+}
+.rc_item .rc_avatar img {
+
+}
+.rc_item .rc_left {
+	display:inline;
+	float:left;
+	padding-right:7px !important;
+	padding-right:4px;
+}
+.rc_item .rc_right {
+	display:inline;
+	float:right;
+	padding-left:7px !important;
+	padding-left:4px;
+}
+
+.rc_item .rc_info .author_name {
+	font-weight:bold;
+	color:#0072A8;
+}
+.post_title a{color:#0072A8!important;}
+.post_title a:hover{ color:#F90}
+#rc_newest {
+	float:left;
+	padding-right:10px;
+}
+#rc_newer {
+	float:left;
+}
+#rc_older {
+	float:right;
+}
+.rc_fixed {
+	clear:both;
+}
+.rc_label {
+	font-weight:bolder;
+}
+.rc_back {
+	float:left;
+}
+.rc_datetime {
+	float:right;
+}
+.url{ color:#F90!important}

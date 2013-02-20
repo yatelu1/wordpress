@@ -1,0 +1,61 @@
+/*
+Theme Name: AesRoom
+Theme URI: http://dwlxjz.com/
+Author: dwlxjz
+Author URI: http://dwlxjz.com/
+Description:远翔原创,唯美屋
+Version: 1.0
+*/
+ul{
+	margin:0;
+	padding:0;
+}
+textarea{
+	height: 50px;
+    width: 400px;
+}
+a,a:visited{
+	color:#CC3333;
+	text-decoration:none;
+}
+#panel-content{
+	 -moz-box-shadow: 0 0 10px #ccc;
+    -webkit-box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 0 10px #ccc;
+	width:100%;
+	overflow:auto;
+	height:600px;
+	margin-top:10px;
+}
+.admin_bar{
+	width:900px;
+	display: inline-table;
+	height:auto;
+	padding:10px;
+	 -moz-box-shadow: 0 0 10px #ccc;
+    -webkit-box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 0 10px #ccc;
+	margin:20px 0 0px 20px;
+}
+form{
+	padding:10px;
+}
+.admin_left{
+	width:200px;
+	height:50px;
+	line-height:50px;
+	text-align:center;
+	color:#ff6666;
+	font-weight:bold;
+	font-size:13px;
+	float:left;
+}
+.admin_right{
+	width:600px;
+	line-height:50px;
+	float:left;
+}
+.admin_right ul li{
+	float:left;
+	margin-left:15px;
+}
