@@ -2,8 +2,8 @@
 /*
 	Plugin Name: WP-Cumulus
 	Plugin URI: http://www.roytanck.com/2008/03/15/wp-cumulus-released
-	Description: Flash based Tag Cloud for WordPress
-	Version: 1.21
+	Description: 以Flash的形式显示3D效果的标签云 （叶子的收藏室汉化版）
+	Version: 1.22
 	Author: Roy Tanck
 	Author URI: http://www.roytanck.com
 	
@@ -22,6 +22,9 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+// check for WP context
+if ( !defined('ABSPATH') ){ die(); }
 
 //initially set the options
 function wp_cumulus_install () {
@@ -58,7 +61,7 @@ function wp_cumulus_install () {
 
 // add the admin page
 function wp_cumulus_add_pages() {
-	add_options_page('WP Cumulus', 'WP Cumulus', 8, __FILE__, 'wp_cumulus_options');
+	add_options_page('3D标签云', '3D标签云', 8, __FILE__, 'wp_cumulus_options');
 }
 
 // replace tag in content with tag cloud (non-shortcode version for WP 2.3.x)
@@ -127,6 +130,7 @@ function wp_cumulus_createflashcode( $widget=false, $atts=NULL ){
 	// add random seeds to so name and movie url to avoid collisions and force reloading (needed for IE)
 	$soname .= rand(0,9999999);
 	$movie .= '?r=' . rand(0,9999999);
+	$divname .= rand(0,9999999);
 	// write flash tag
 	if( $options['compmode']!='true' ){
 		$flashtag = '<!-- SWFObject embed by Geoff Stearns geoff@deconcept.com http://blog.deconcept.com/swfobject/ -->';	
@@ -169,18 +173,18 @@ function wp_cumulus_createflashcode( $widget=false, $atts=NULL ){
 		}
 		$flashtag .= '<param name="flashvars" value="';
 		$flashtag .= 'tcolor=0x'.$options['tcolor'];
-		$flashtag .= '&tcolor2=0x'.$options['tcolor2'];
-		$flashtag .= '&hicolor=0x'.$options['hicolor'];
-		$flashtag .= '&tspeed='.$options['speed'];
-		$flashtag .= '&distr='.$options['distr'];
-		$flashtag .= '&mode='.$options['mode'];
+		$flashtag .= '&amp;tcolor2=0x'.$options['tcolor2'];
+		$flashtag .= '&amp;hicolor=0x'.$options['hicolor'];
+		$flashtag .= '&amp;tspeed='.$options['speed'];
+		$flashtag .= '&amp;distr='.$options['distr'];
+		$flashtag .= '&amp;mode='.$options['mode'];
 		// put tags in flashvar
 		if( $options['mode'] != "cats" ){
-			$flashtag .= '&tagcloud='.urlencode('<tags>') . $tagcloud . urlencode('</tags>');
+			$flashtag .= '&amp;tagcloud='.urlencode('<tags>') . $tagcloud . urlencode('</tags>');
 		}
 		// put categories in flashvar
 		if( $options['mode'] != "tags" ){
-			$flashtag .= '&categories=' . $cats;
+			$flashtag .= '&amp;categories=' . $cats;
 		}
 		$flashtag .= '" />';
 		// alternate content
@@ -218,68 +222,69 @@ function wp_cumulus_options() {
 	}
 	// options form
 	echo '<form method="post">';
-	echo "<div class=\"wrap\"><h2>Display options</h2>";
+	echo "<div class=\"wrap\"><h2>3D标签云设置选项</h2>";
+	echo '<p >说明：您使用这个插件原作者是 Roy Tanck，现由叶子汉化，有问题可以去<a href="http://leavs.cn" target="_blank" >叶子的收藏室</a>留言,叶子是中国人。（PS:英语足够熟练的也可以去找插件作者交流）</p>';
 	echo '<table class="form-table">';
 	// width
-	echo '<tr valign="top"><th scope="row">Width of the Flash tag cloud</th>';
-	echo '<td><input type="text" name="width" value="'.$options['width'].'" size="5"></input><br />Width in pixels (500 or more is recommended)</td></tr>';
+	echo '<tr valign="top"><th scope="row">宽度</th>';
+	echo '<td><input type="text" name="width" value="'.$options['width'].'" size="5"></input><br />像素宽度（参考你的边栏宽度）</td></tr>';
 	// height
-	echo '<tr valign="top"><th scope="row">Height of the Flash tag cloud</th>';
-	echo '<td><input type="text" name="height" value="'.$options['height'].'" size="5"></input><br />Height in pixels (ideally around 3/4 of the width)</td></tr>';
+	echo '<tr valign="top"><th scope="row">高度</th>';
+	echo '<td><input type="text" name="height" value="'.$options['height'].'" size="5"></input><br />像素高度（建议设置为宽度的四分之三）</td></tr>';
 	// text color
-	echo '<tr valign="top"><th scope="row">Color of the tags</th>';
-	echo '<td><input type="text" name="tcolor" value="'.$options['tcolor'].'" size="8"></input> Optional second color for gradient: <input type="text" name="tcolor2" value="'.$options['tcolor2'].'" size="8"></input>  Optional highlighl color: <input type="text" name="hicolor" value="'.$options['hicolor'].'" size="8"></input><br />These should be 6 character hex color values without the # prefix (000000 for black, ffffff for white)</td></tr>';
+	echo '<tr valign="top"><th scope="row">标签文字颜色</th>';
+	echo '<td>渐变颜色（标签下文章数目越多，越趋于的颜色）: <input type="text" name="tcolor" value="'.$options['tcolor'].'" size="8"></input> <br>基本颜色（大部分标签的颜色）: <input type="text" name="tcolor2" value="'.$options['tcolor2'].'" size="8"></input> <br> 点选颜色（鼠标经过某标签导致其变色）: <input type="text" name="hicolor" value="'.$options['hicolor'].'" size="8"></input><br />这些应该是6字符的十六进制颜色值，不包括＃前缀 (000000 是黑色, ffffff 是白色)</td></tr>';
 	// background color
-	echo '<tr valign="top"><th scope="row">Background color</th>';
-	echo '<td><input type="text" name="bgcolor" value="'.$options['bgcolor'].'" size="8"></input><br />6 character hex color value</td></tr>';
+	echo '<tr valign="top"><th scope="row">背景颜色</th>';
+	echo '<td><input type="text" name="bgcolor" value="'.$options['bgcolor'].'" size="8"></input><br />6字符的十六进制颜色值</td></tr>';
 	// transparent
-	echo '<tr valign="top"><th scope="row">Use transparent mode</th>';
+	echo '<tr valign="top"><th scope="row">使用透明模式</th>';
 	echo '<td><input type="checkbox" name="trans" value="true"';
 	if( $options['trans'] == "true" ){ echo ' checked="checked"'; }
-	echo '></input><br />Switches on Flash\'s wmode-transparent setting</td></tr>';
+	echo '></input><br />开启这个选项可以使Flash的背景透明（去除黑底色）</td></tr>';
 	// speed
-	echo '<tr valign="top"><th scope="row">Rotation speed</th>';
-	echo '<td><input type="text" name="speed" value="'.$options['speed'].'" size="8"></input><br />Speed (percentage, default is 100)</td></tr>';
+	echo '<tr valign="top"><th scope="row">滚动速度</th>';
+	echo '<td><input type="text" name="speed" value="'.$options['speed'].'" size="8"></input><br />速度（百分比，默认值为100）</td></tr>';
 	// distribution
-	echo '<tr valign="top"><th scope="row">Distribute tags evenly on sphere</th>';
+	echo '<tr valign="top"><th scope="row">将标签均匀分布在球形表面</th>';
 	echo '<td><input type="checkbox" name="distr" value="true"';
 	if( $options['distr'] == "true" ){ echo ' checked="checked"'; }
-	echo '></input><br />Places tags at equal intervals instead of random</td></tr>';
+	echo '></input><br />标签之间都有一个固定的间隔，而不是混乱堆放。</td></tr>';
 	// end table
 	echo '</table>';
 	// tags, cats?
-	echo '<h3>Output options</h3>';
+	echo '<h3>显示设置</h3>';
 	echo '<table class="form-table">';
-	echo '<tr valign="top"><th scope="row">Display:</th>';
+	echo '<tr valign="top"><th scope="row">你要在标签云里显示:</th>';
 	echo '<td><input type="radio" name="mode" value="tags"';
 	if( $options['mode'] == 'tags' ){ echo ' checked="checked" '; }
-	echo '></input> Tags<br /><input type="radio" name="mode" value="cats"';
+	echo '></input>标签<br /><input type="radio" name="mode" value="cats"';
 	if( $options['mode'] == 'cats' ){ echo ' checked="checked" '; }
-	echo '></input> Categories<br /><input type="radio" name="mode" value="both"';
+	echo '></input>分类<br /><input type="radio" name="mode" value="both"';
 	if( $options['mode'] == 'both' ){ echo ' checked="checked" '; }
-	echo '></input> Both (you may want to consider lowering the number of tags , using the advanced options below)';
+	echo '></input>包括以上两者 (如果你想减少显示的标签数目, 接下来的高级选项你可能会用到)';
 	// end table
 	echo '</table>';
 	// advanced options
-	echo '<h3>Advanced options</h3><p>Please leave this setting empty unless you know what you\'re doing.</p>';
+	echo '<h3>高级选项</h3><p>除非你知道你在做什么。不然就不要在下面的输入框里填写任何东西！</p>';
 	echo '<table class="form-table">';
 	// arguments
-	echo '<tr valign="top"><th scope="row">wp_tag_cloud parameters</th>';
-	echo '<td><input type="text" name="args" value="'.$options['args'].'" size="60"></input><br />Parameter string for wp_tag_cloud (see the <a href="http://codex.wordpress.org/Template_Tags/wp_tag_cloud#Parameters" target="_blank">codex</a> for more details)<br /><br /><strong>Example uses</strong><br />number=20 - limit the number of tags to 20<br />smallest=5&largest=50 - specify custom font sizes<br /><br /><strong>Known issues</strong><ul><li>Currently, the \'units\', \'orderby\' and \'order\' parameters are not supported.</li><li>Setting \'format\' to anything but \'flat\' will cause the plugin to fail.</li></ul></td></tr>';	
+	echo '<tr valign="top"><th scope="row">其他扩展参数</th>';
+	echo '<td><input type="text" name="args" value="'.$options['args'].'" size="60"></input><br />WordPress标签云参数的更多详情请见<a href="http://codex.wordpress.org/Template_Tags/wp_tag_cloud#Parameters" target="_blank">参考文档</a> for more details)<br /><br /><strong>应用举例</strong><br />number=20 -  标签数量最多为20个<br />smallest=5&largest=50 - 自定义字体大小（最小5px，最大50px）<br /><br /><strong>已知问题</strong><ul><li>目前不支持以下参数： \'units\', \'orderby\' , \'order\' parameters are not supported.</li><li>将\'format\'设置成 \'flat\' 会导致插件失效.</li></ul></td></tr>';	
 	// compatibility mode
-	echo '<tr valign="top"><th scope="row">Use compatibility mode?</th>';
+	echo '<tr valign="top"><th scope="row">启用兼容模式?</th>';
 	echo '<td><input type="checkbox" name="compmode" value="true"';
 	if( $options['compmode'] == "true" ){ echo ' checked="checked"'; }
-	echo '></input><br />Enabling this option switches the plugin to a different way of embedding Flash into the page. Use this if your page has markup errors or if you\'re having trouble getting WP-Cumulus to display correctly. This affects both the shortcode version and the widget.</td></tr>';
+	echo '></input><br />如果你的页面存在HTML语法错误或者因为其他问题无法正确显示3D标签云，开启这样选项则以兼容模式将 Flash 效果嵌入页面. 这一选项对以代码形式和小工具形式加入侧边栏的3D标签云都起作用.</td></tr>';
 	// show regular tag in alternate content?
-	echo '<tr valign="top"><th scope="row">Show the regular HTML tag cloud?</th>';
+	echo '<tr valign="top"><th scope="row">显示普通的HTML标签云?</th>';
 	echo '<td><input type="checkbox" name="showwptags" value="true"';
 	if( $options['showwptags'] == "true" ){ echo ' checked="checked"'; }
-	echo '></input><br />Un-hides the regular HTML tag cloud that may appear for a second or so before it is replaced by the Flash one. Turn this on if SEO and/or non-flash users are a major concern for you. This option affects both the shortcode version and the widget.</td></tr>';
+	echo '></input><br />如果用户浏览器不能显示 Flash 效果的标签云则显示普通的标签云（非3D效果）. 开启这一选项有利于搜索引擎优化和一些无法正常显示 Flash 效果的用户. 这一选项对以代码形式和小工具形式加入侧边栏的3D标签云都起作用.</td></tr>';
 	// close stuff
 	echo '<input type="hidden" name="wpcumulus_submit" value="true"></input>';
 	echo '</table>';
-	echo '<p class="submit"><input type="submit" value="Update Options &raquo;"></input></p>';
+	echo '<p class="submit"><input type="submit" value="保存选项 &raquo;"></input></p>';
 	echo "</div>";
 	echo '</form>';
 	
@@ -348,22 +353,22 @@ function widget_init_wp_cumulus_widget() {
 		$args = attribute_escape($options['args']);
 		$mode = attribute_escape($options['mode']);
 		?>
-			<p><label for="wpcumulus_widget_title"><?php _e('Title:'); ?> <input class="widefat" id="wpcumulus_widget_title" name="wpcumulus_widget_title" type="text" value="<?php echo $title; ?>" /></label></p>
-			<p><label for="wpcumulus_widget_width"><?php _e('Width:'); ?> <input class="widefat" id="wpcumulus_widget_width" name="wpcumulus_widget_width" type="text" value="<?php echo $width; ?>" /></label></p>
-			<p><label for="wpcumulus_widget_height"><?php _e('Height:'); ?> <input class="widefat" id="wpcumulus_widget_height" name="wpcumulus_widget_height" type="text" value="<?php echo $height; ?>" /></label></p>
-			<p><label for="wpcumulus_widget_tcolor"><?php _e('Tag color:'); ?> <input class="widefat" id="wpcumulus_widget_tcolor" name="wpcumulus_widget_tcolor" type="text" value="<?php echo $tcolor; ?>" /></label></p>
-			<p><label for="wpcumulus_widget_tcolor2"><?php _e('Optional second color for gradient:'); ?> <input class="widefat" id="wpcumulus_widget_tcolor2" name="wpcumulus_widget_tcolor2" type="text" value="<?php echo $tcolor2; ?>" /></label></p>
-			<p><label for="wpcumulus_widget_hicolor"><?php _e('Optional highlight color:'); ?> <input class="widefat" id="wpcumulus_widget_hicolor" name="wpcumulus_widget_hicolor" type="text" value="<?php echo $hicolor; ?>" /></label></p>
-			<p><label for="wpcumulus_widget_bgcolor"><?php _e('Background color:'); ?> <input class="widefat" id="wpcumulus_widget_bgcolor" name="wpcumulus_widget_bgcolor" type="text" value="<?php echo $bgcolor; ?>" /></label></p>
-			<p><label for="wpcumulus_widget_trans"><input class="checkbox" id="wpcumulus_widget_trans" name="wpcumulus_widget_trans" type="checkbox" value="true" <?php if( $trans == "true" ){ echo ' checked="checked"'; } ?> > Background transparency</label></p>
+			<p><label for="wpcumulus_widget_title"><?php _e('标题:'); ?> <input class="widefat" id="wpcumulus_widget_title" name="wpcumulus_widget_title" type="text" value="<?php echo $title; ?>" /></label></p>
+			<p><label for="wpcumulus_widget_width"><?php _e('宽度:'); ?> <input class="widefat" id="wpcumulus_widget_width" name="wpcumulus_widget_width" type="text" value="<?php echo $width; ?>" /></label></p>
+			<p><label for="wpcumulus_widget_height"><?php _e('高度:'); ?> <input class="widefat" id="wpcumulus_widget_height" name="wpcumulus_widget_height" type="text" value="<?php echo $height; ?>" /></label></p>
+			<p><label for="wpcumulus_widget_tcolor"><?php _e('渐变颜色:'); ?> <input class="widefat" id="wpcumulus_widget_tcolor" name="wpcumulus_widget_tcolor" type="text" value="<?php echo $tcolor; ?>" /></label></p>
+			<p><label for="wpcumulus_widget_tcolor2"><?php _e('标签颜色:'); ?> <input class="widefat" id="wpcumulus_widget_tcolor2" name="wpcumulus_widget_tcolor2" type="text" value="<?php echo $tcolor2; ?>" /></label></p>
+			<p><label for="wpcumulus_widget_hicolor"><?php _e('点选颜色:'); ?> <input class="widefat" id="wpcumulus_widget_hicolor" name="wpcumulus_widget_hicolor" type="text" value="<?php echo $hicolor; ?>" /></label></p>
+			<p><label for="wpcumulus_widget_bgcolor"><?php _e('背景颜色:'); ?> <input class="widefat" id="wpcumulus_widget_bgcolor" name="wpcumulus_widget_bgcolor" type="text" value="<?php echo $bgcolor; ?>" /></label></p>
+			<p><label for="wpcumulus_widget_trans"><input class="checkbox" id="wpcumulus_widget_trans" name="wpcumulus_widget_trans" type="checkbox" value="true" <?php if( $trans == "true" ){ echo ' checked="checked"'; } ?> > 背景透明效果</label></p>
 			<p><label for="wpcumulus_widget_speed"><?php _e('Speed:'); ?> <input class="widefat" id="wpcumulus_widget_speed" name="wpcumulus_widget_speed" type="text" value="<?php echo $speed; ?>" /></label></p>
-			<p><label for="wpcumulus_widget_distr"><input class="checkbox" id="wpcumulus_widget_distr" name="wpcumulus_widget_distr" type="checkbox" value="true" <?php if( $distr == "true" ){ echo ' checked="checked"'; } ?> > Distribute evenly on sphere</label></p>
+			<p><label for="wpcumulus_widget_distr"><input class="checkbox" id="wpcumulus_widget_distr" name="wpcumulus_widget_distr" type="checkbox" value="true" <?php if( $distr == "true" ){ echo ' checked="checked"'; } ?> > 显示哪些字段</label></p>
 			<p>
 				<input class="radio" id="wpcumulus_widget_mode" name="wpcumulus_widget_mode" type="radio" value="tags" <?php if( $mode == "tags" ){ echo ' checked="checked"'; } ?> > Tags<br />
 				<input class="radio" id="wpcumulus_widget_mode" name="wpcumulus_widget_mode" type="radio" value="cats" <?php if( $mode == "cats" ){ echo ' checked="checked"'; } ?> > Categories<br />
 				<input class="radio" id="wpcumulus_widget_mode" name="wpcumulus_widget_mode" type="radio" value="both" <?php if( $mode == "both" ){ echo ' checked="checked"'; } ?> > Both
 			</p>
-			<p><label for="wpcumulus_widget_args"><?php _e('wp_tag_cloud parameters:'); ?> <input class="widefat" id="wpcumulus_widget_args" name="wpcumulus_widget_args" type="text" value="<?php echo $args; ?>" /></label></p>
+			<p><label for="wpcumulus_widget_args"><?php _e('其他参数:'); ?> <input class="widefat" id="wpcumulus_widget_args" name="wpcumulus_widget_args" type="text" value="<?php echo $args; ?>" /></label></p>
 			<input type="hidden" id="wpcumulus_widget_submit" name="wpcumulus_widget_submit" value="1" />
 		<?php
 	}

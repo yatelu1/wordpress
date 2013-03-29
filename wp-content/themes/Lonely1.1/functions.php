@@ -68,7 +68,7 @@ add_action( 'manage_pages_custom_column', 'fb_AddThumbValue', 10, 2 );
 
 //文章分页
 if ( !function_exists('pagenavi') ) {
-	function pagenavi( $p = 7 ) { // 取当前页前后各 2 页，根据需要改
+	function pagenavi( $p = 2 ) { // 取当前页前后各 2 页，根据需要改
 		if ( is_singular() ) return; // 文章与插页不用
 		global $wp_query, $paged;
 		$max_page = $wp_query->max_num_pages;

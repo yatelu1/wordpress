@@ -566,3 +566,9 @@ table#wp-calendar{
 #footer a:hover{
 	color:#fff;
 }
+ol {
+padding:10px 50px
+}
+ol li {
+padding:5px 0;
+}

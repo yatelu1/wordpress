@@ -20,5 +20,6 @@
 		document.getElementById("bdshell_js").src = "http://share.baidu.com/static/js/shell_v2.js?cdnversion=" + new Date().getHours();
 </script>
 <!-- Baidu Button END -->
+<script defer src="http://julying.com/lab/weather/v3/jquery.weather.build.min.js?parentbox=body&moveArea=all&zIndex=1&move=1&drag=1&autoDrop=0&styleSize=big&style=_random&area=client&city=%E5%8C%97%E4%BA%AC"></script>
 </body>
 </html>
